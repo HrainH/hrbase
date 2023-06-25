@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS&TS</title>
+</head>
+<style>
+canvas{
+	position:fixed;
+	top:0;
+	left:0;
+	z-index:-1;
+	background:#0e1729;
+    position: absolute;
+}
+</style>
+<body>
+
+    <canvas id="starfield" style="height: 850px;"></canvas>
+
+    <h1 style="margin-top: 15px;-webkit-text-stroke: 1px rgb(255, 255, 255);text-align: center;font-size: 55px;">
+        JS&TS学习总结
+    </h1>
+    <div style="border-radius: 20px;margin-top: 0px; background-color: rgb(255, 255, 255,0.7);margin-right: auto;margin-left:auto ;width: 800px;height: 650px;">
+    
+    <p style="width: 600px;margin-right: auto;margin-left:auto ;font-size: 18px;line-height:25px; ">
+        <br><br><br>
+        &emsp;&emsp;在这次的web实践中我全部使用的是JS并没有涉及TS,所以我会以写JS的经历来对这次学习进行总结。<br>
+        &emsp;&emsp;在web实践中我最先使用JS的地方就是点击选项出现对应内容的地方(使用和解决方法请看web项目报告的<em style="color: red;">问题4</em>),
+        我这样设计主要是因为增添部分也页面的互动性,同时又减少布局空间使界面更简洁一点。<br>
+        &emsp;&emsp;第二次使用JS的地方是在点击图片展示后续内容的地方(使用和解决方法请看web项目报告的<em style="color: red;">问题5</em>),
+        这也是因为我想增添界面的互动性,让页面有一些动态的效果。<br>
+        &emsp;&emsp;第三次使用JS的地方就是划动展示内容了(使用和解决方法请看web项目报告的<em style="color: red;">问题6</em>),
+        这样设计还是因为我想增添页面的互动性。<br>
+        &emsp;&emsp;不难看出我在使用JS时的主要目的是为了增加也页面的可互动性,因为我觉得JS它就是一个让页面得互动性提高一个档次得东西,
+        它得用法和高级语言程序差不多,但它得一切数据类型都使用var来规范,不得不说确实好用。
+        虽然我并没有使用很多,但我发现"$"在JS中时表示jquery,它能获取一个对象得相关内容和点击事件,在设置页面的互动方面我也使用了不少<br>
+        &emsp;&emsp;总的来说我把JS当成一种高级语言来编写,其中高级语言得很多逻辑在JS中也使用得通,不得不说一个完整得web所包含得东西一定也不止
+        JS、HTML、CSS,我学到的只是皮毛,在web开发的深处和远端一定存在着更神奇和奥妙的东西,想要发现就一定要保持一颗热爱学习和敢于尝试的心。
+
+    </p>    
+    
+    </div>
+</body>
+<script>
+var canvas;
+var stars_count;
+var stars;
+ini();
+makeStars();
+var interval=setInterval(function(){drawStars();},50);
+
+function ini(){
+    canvas = document.getElementById("starfield");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    context = canvas.getContext("2d");
+    stars = Array();
+    stars_count = 2000;
+    clearInterval(interval);
+}
+
+function makeStars(){
+    for(var i=0;i<stars_count;i++)
+    {
+        let x=Math.random() * canvas.offsetWidth;
+        let y = Math.random() * canvas.offsetHeight;
+        let radius = Math.random()*0.8;
+        let color="rgba("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+",0.8)";
+        let speed=Math.random()*0.5;
+        let arr={'x':x,'y':y,'radius':radius,'color':color,'speed':speed};
+        stars.push(arr);
+    }
+}
+
+function drawStars(){
+    context.fillStyle = "#0e1729";
+    context.fillRect(0,0,canvas.width,canvas.height);
+    for (var i = 0; i < stars.length; i++) {
+        var x = stars[i]['x'] - stars[i]['speed'];
+        if(x<-2*stars[i]['radius']) x=canvas.width;
+        stars[i]['x']=x;
+        var y = stars[i]['y'];
+        var radius = stars[i]['radius'];
+        context.beginPath();
+        context.arc(x, y, radius*2, 0, 2*Math.PI);
+        context.fillStyle = "rgba("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+",0.8)";
+        context.fill();
+    }
+}
+
+window.onresize = function(){
+    ini();
+    makeStars();
+    interval=setInterval(function(){drawStars();},50);
+}
+
+</script>
+</html>

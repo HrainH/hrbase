@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H&C</title>
+</head>
+<style>
+canvas{
+	position:fixed;
+	top:0;
+	left:0;
+	z-index:-1;
+	background:#0e1729;
+    position: absolute;
+}
+</style>
+<body>
+
+    <canvas id="starfield" style="height: 1050px;"></canvas>
+
+    <h1 style="margin-top: 15px;-webkit-text-stroke: 1px rgb(255, 255, 255);text-align: center;font-size: 55px;">
+        HTML&CSS学习总结
+    </h1>
+    <div style="border-radius: 20px;margin-top: 0px; background-color: rgb(255, 255, 255,0.7);margin-right: auto;margin-left:auto ;width: 800px;height: 880px;">
+    
+    <h2><br>&emsp;&emsp;&emsp;一.HTML</h2>
+    <p style="width: 600px;margin-right: auto;margin-left:auto ;font-size: 16px;line-height:25px; ">
+        &emsp;&emsp;HTML即超文本标记语言,在这里面需要我们通过标签来实现需要的元素添加,在这次的web实践中我大致采用了
+        "h"、"p"、"ul"、"li"、"div"、"a"、"img"这几个主要的标签对页面进行布置。<br>
+        &emsp;&emsp;在以上标签中其中的"div"标签是使用得最多的一种标签,因为在页面布局的时候为了让元素与
+        元素之间不起冲突,就需要用div进行区块划分。"ul"和"li"是做导航栏比较方便的一种方法,通过建立无序表和条目,再把需要的内容放在条目中即可,
+        这使得当时我在做导航栏时省了不少的时间。<br>
+        &emsp;&emsp;其中我认为最有意思的是"a"和"div"标签,在web实践过程中"a"标签是超链接,它的herf能够放置网址的url或者是文件目录,
+        在内容框里能够放置图片或其他元素且可点击,这无疑是增添了界面的可互动性,同时又使得界面没那么单一。
+        "div"标签我认为有意思是因为它在CSS方面的表现,在HTML中我就不多说了。<br>
+        &emsp;&emsp;总之在学习了HTML后,我发现可视化在其中真的非常容易实现,而且我今后也一定会去更多的了解HTML。
+    </p>    
+    
+    <h2>&emsp;&emsp;&emsp;二.CSS</h2>
+    <p style="width: 600px;margin-right: auto;margin-left:auto ;font-size: 16px;line-height:25px;word-break: break-all;  ">
+        &emsp;&emsp;CSS即级联样式表,它的作用是对HTML文件中的对应标签进行布局和美化,使得页面更加美观增添互动性,在CSS使用中我使用的对象大多为"div",
+        所以我主要说div上我使用得CSS。<br>
+        &emsp;&emsp;在布局方面我经常使用"margin"、"float"、"position"、"text-align"、"margin"、"padding"、"width"、"height"、"display",
+        其中"position"中的绝对布局虽然好用,但我在使用部分js时会有界面布局错乱的情况,解决起来也是有点头疼的。<br>
+        &emsp;&emsp;在界面美化的方面我经常使用"background"、"border"、" color"、"transition"、"opacity"这几个属性来对div进行美化,
+        其中在我想如何设置有transition的背景时,发现background可以添加url这个链接属性,正好添加图片链接就解决了问题,
+        不得不说在有些时候不去尝试就无法找到意料之外的答案。<br>
+        &emsp;&emsp;在实现交互动画时,我使用的时"transition",通过设置它的动画时间和"after"、"hover"就能够实现一个简单的动画效果,
+        这个方法在我的页面部分交互中使用得较多。<br>
+        &emsp;&emsp;在学习CSS后发现它对HTML得布局和美化起了很大得作用,可以说一个没有CSS的HTML就说不上是一个网页,学好CSS和HTML才算web的入门。
+    </p>
+
+    </div>
+</body>
+<script>
+var canvas;
+var stars_count;
+var stars;
+ini();
+makeStars();
+var interval=setInterval(function(){drawStars();},50);
+
+function ini(){
+    canvas = document.getElementById("starfield");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    context = canvas.getContext("2d");
+    stars = Array();
+    stars_count = 2000;
+    clearInterval(interval);
+}
+
+function makeStars(){
+    for(var i=0;i<stars_count;i++)
+    {
+        let x=Math.random() * canvas.offsetWidth;
+        let y = Math.random() * canvas.offsetHeight;
+        let radius = Math.random()*0.8;
+        let color="rgba("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+",0.8)";
+        let speed=Math.random()*0.5;
+        let arr={'x':x,'y':y,'radius':radius,'color':color,'speed':speed};
+        stars.push(arr);
+    }
+}
+
+function drawStars(){
+    context.fillStyle = "#0e1729";
+    context.fillRect(0,0,canvas.width,canvas.height);
+    for (var i = 0; i < stars.length; i++) {
+        var x = stars[i]['x'] - stars[i]['speed'];
+        if(x<-2*stars[i]['radius']) x=canvas.width;
+        stars[i]['x']=x;
+        var y = stars[i]['y'];
+        var radius = stars[i]['radius'];
+        context.beginPath();
+        context.arc(x, y, radius*2, 0, 2*Math.PI);
+        context.fillStyle = "rgba("+Math.random()*255+","+Math.random()*255+","+Math.random()*255+",0.8)";
+        context.fill();
+    }
+}
+
+window.onresize = function(){
+    ini();
+    makeStars();
+    interval=setInterval(function(){drawStars();},50);
+}
+
+</script>
+</html>
